@@ -100,8 +100,12 @@
 	  return Main;
 	})(React.Component);
 
+	var reactRoot = document.getElementById('react');
+
 	var documentReady = function documentReady() {
-	  ReactDOM.render(React.createElement(Main, null), document.getElementById('react'));
+	  if (reactRoot) {
+	    ReactDOM.render(React.createElement(Main, null), reactRoot);
+	  }
 	};
 
 	$(documentReady);

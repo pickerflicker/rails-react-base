@@ -14,7 +14,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
+  <div class="right">
+    <% if user_signed_in? %>
+      Welcome <%= link_to current_user.display_name, profile_path %>!
+      <%= link_to 'logout', destroy_user_session_path, method: :delete %>
+    <% else %>
+      Please
+      <%= link_to 'login', user_session_path %>
+      or create a
+      <%= link_to 'new account', new_user_registration_path %>
+    <% end %>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
   <%= yield %>
 </body>
 </html>

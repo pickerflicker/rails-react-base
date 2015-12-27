@@ -28,11 +28,12 @@ class Main extends React.Component {
   }
 }
 
+let reactRoot = document.getElementById('react')
+
 let documentReady = () => {
-  ReactDOM.render(
-    <Main />,
-    document.getElementById('react')
-  );
+  if (reactRoot) {
+    ReactDOM.render(<Main />, reactRoot);
+  }
 };
 
 $(documentReady);
