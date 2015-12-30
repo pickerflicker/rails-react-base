@@ -7,5 +7,12 @@ export default {
       actionType: ActionTypes.RECEIVED_TWEETS,
       rawTweets: rawTweets
     });
-  }
+  },
+  createdTweet(tweet) {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATED_TWEET,
+      tweet: tweet
+    });
+  },
 }
+

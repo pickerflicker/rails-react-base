@@ -26,9 +26,11 @@ AppDispatcher.register( action => {
   switch(action.actionType) {
     case ActionTypes.RECEIVED_TWEETS:
       _tweets = action.rawTweets;
-      console.log("dispatched!");
       TweetStore.emitChange();
       break;
+    case ActionTypes.CREATED_TWEET:
+      _tweets.unshift(action.tweet);
+      TweetStore.emitChange();
     default:
       // no op
   }

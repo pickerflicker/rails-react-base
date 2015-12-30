@@ -140,7 +140,7 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -149,6 +149,12 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _TweetActions = __webpack_require__(4);
+
+	var _TweetActions2 = _interopRequireDefault(_TweetActions);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -169,7 +175,7 @@
 	    key: 'sendTweet',
 	    value: function sendTweet(event) {
 	      event.preventDefault();
-	      this.props.sendTweet(this.refs.tweetTextArea.value);
+	      _TweetActions2.default.sendTweet(this.refs.tweetTextArea.value);
 	      this.refs.tweetTextArea.value = '';
 	    }
 	  }, {
@@ -346,6 +352,9 @@
 	exports.default = {
 	  getAllTweets: function getAllTweets() {
 	    _API2.default.getAllTweets();
+	  },
+	  sendTweet: function sendTweet(body) {
+	    _API2.default.createTweet(body);
 	  }
 	};
 
@@ -369,6 +378,13 @@
 	  getAllTweets: function getAllTweets() {
 	    $.get('/tweets').success(function (rawTweets) {
 	      _ServerActions2.default.receivedTweets(rawTweets);
+	    }).error(function (error) {
+	      return console.log(error);
+	    });
+	  },
+	  createTweet: function createTweet(body) {
+	    $.post('/tweets', { body: body }).success(function (tweet) {
+	      _ServerActions2.default.createdTweet(tweet);
 	    }).error(function (error) {
 	      return console.log(error);
 	    });
@@ -400,6 +416,12 @@
 	    _dispatcher2.default.dispatch({
 	      actionType: _constants2.default.RECEIVED_TWEETS,
 	      rawTweets: rawTweets
+	    });
+	  },
+	  createdTweet: function createdTweet(tweet) {
+	    _dispatcher2.default.dispatch({
+	      actionType: _constants2.default.CREATED_TWEET,
+	      tweet: tweet
 	    });
 	  }
 	};
@@ -847,7 +869,8 @@
 	  value: true
 	});
 	exports.default = {
-	  RECEIVED_TWEETS: 'RECEIVED_TWEETS'
+	  RECEIVED_TWEETS: 'RECEIVED_TWEETS',
+	  CREATED_TWEET: 'CREATED_TWEET'
 	};
 
 /***/ },
@@ -923,9 +946,11 @@
 	  switch (action.actionType) {
 	    case _constants2.default.RECEIVED_TWEETS:
 	      _tweets = action.rawTweets;
-	      console.log("dispatched!");
 	      TweetStore.emitChange();
 	      break;
+	    case _constants2.default.CREATED_TWEET:
+	      _tweets.unshift(action.tweet);
+	      TweetStore.emitChange();
 	    default:
 	    // no op
 	  }
