@@ -14,5 +14,17 @@ export default {
       tweet: tweet
     });
   },
+  receivedUsers(rawUsers) {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.RECEIVED_USERS,
+      rawUsers: rawUsers
+    });
+  },
+  createdFollower(follower) {
+    AppDispatcher.dispatch({
+      actionType: ActionTypes.CREATED_FOLLOWER,
+      follower: follower
+    });
+  }
 }
 
